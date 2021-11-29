@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="munitdoctus-test-suite.xml" />
+	<munit:test name="munitdoctus-test-suite-munitdoctusFlowTest" doc:id="64c5d069-5b9f-46ac-b4d1-bc12159fa336" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="625aa36e-16ca-4719-a65c-ebe6adabc6ac" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="64080c60-15ca-4b5a-b7e1-60450ec6e0e1" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="7ec955e3-2d07-41fa-a3e3-f116d1932132" />
+			<flow-ref doc:name="Flow-ref to munitdoctusFlow" doc:id="69992185-471a-4aca-bf76-096f60de2523" name="munitdoctusFlow"/>
+		</munit:execution>
+	</munit:test>
+
+
+</mule>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="3acd6630-c97d-4d68-897b-0cd5eccec3dd" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="35df463c-8bca-4e65-b58d-86c4ca040e54" >
+		<http:request-connection host="apisero.com" port="80" />
+	</http:request-config>
+	<flow name="munitdoctusFlow" doc:id="b1ef9901-b06b-46fd-ae5b-7a9b932b503d" >
+		<http:listener doc:name="Listener" doc:id="aeea8b74-24f1-4737-a75f-17acbe076e02" config-ref="HTTP_Listener_config" path="/munit"/>
+		<logger level="INFO" doc:name="Logger" doc:id="8bbb023f-49dd-4277-98e6-f6c46732adca" message="start"/>
+		<ee:transform doc:name="Transform Message" doc:id="20efae52-b08e-404a-ad00-44dfea0030f1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	
+	"isvalid":payload.flag,
+	"customer":"1231423"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<choice doc:name="Choice" doc:id="07840ea9-c900-47e7-af4b-f012f4a5f79b" >
+			<when expression="#[payload.isvalid]">
+				<http:request method="GET" doc:name="Request" doc:id="64080c60-15ca-4b5a-b7e1-60450ec6e0e1" config-ref="HTTP_Request_configuration" url="/unit"/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="0f388326-0f6c-4bf2-a416-a2bcc15a776e" message="default"/>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="2e1bf2dd-ce74-40fc-9a04-bd5631533097" message="Completed"/>
+	</flow>
+</mule>
